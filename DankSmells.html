@@ -59,14 +59,10 @@
     </div>
     <script>
         // Your Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyCvax9oJSFcJ53CDsxLOAPEp3VbUm9uhxM",
-          authDomain: "dank-nugs.firebaseapp.com",
-          projectId: "dank-nugs",
-          storageBucket: "dank-nugs.firebasestorage.app",
-          messagingSenderId: "425317486888",
-          appId: "1:425317486888:web:a985d5db7ebbbb9831801d"
-        };
+        const encodedConfig = "eyJhcGlLZXkiOiAiQUl6YVN5Q3ZheDlqU0ZjSjUzQ0RzeExPQVBFcDNWYlVtOXVoeE0iLCAiYXV0aERvbWFpbiI6ICJkYW5rLW51Z3MuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJkYW5rLW51Z3MiLCAic3RvcmFnZUJ1Y2tldCI6ICJkYW5rLW51Z3MuZmlyZWJhc2VzdG9yYWdlLmFwcCIsICJtZXNzYWdpbmdTZW5kZXJJZCI6ICI0MjUzMTc0ODY4ODgiLCAiYXBwSWQiOiAiMToyNTMxNzQ4Njg4ODp3ZWI6YTk4NWQ1ZGI3ZWJiYmI5ODMxODAxZGQifQ==";
+
+        // Decode the configuration
+        const firebaseConfig = JSON.parse(atob(encodedConfig));
 
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);

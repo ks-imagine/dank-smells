@@ -3,35 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥦 Days Since Unit 14 Chiefed Some Dank Nugs 🥦</title>
+    <title>Days Since It Smelled Like Weed</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTloaHVzZjBqcnRndzI5NnhtaXk5eTEwbjVjb2dzaHNqbTJndDIzOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/B8lrRCcd4gpcFgdV0W/giphy.webp') repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
         }
 
         .container {
             text-align: center;
-            background: white;
+            background: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
         }
 
         #day-counter {
-            font-size: 48px;
+            font-size: 72px;
             margin: 20px 0;
+            color: #00ff00;
         }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         ul {
@@ -40,89 +46,61 @@
         }
 
         li {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.2);
             margin: 5px 0;
             padding: 10px;
             border-radius: 5px;
+            font-size: 18px;
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js"></script>
 </head>
 <body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCP9uMzJCpYBM3jfhr9w1syCHPbTYC676s",
+            authDomain: "dank-smells.firebaseapp.com",
+            projectId: "dank-smells",
+            storageBucket: "dank-smells.firebasestorage.app",
+            messagingSenderId: "679912259156",
+            appId: "1:679912259156:web:45ae4785e5d0c03e8f37c1",
+            measurementId: "G-LV0NTHWMVB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Fetch and display the counter value
+        const docRef = doc(db, 'counter', 'daysSince');
+        getDoc(docRef).then((docSnap) => {
+            if (docSnap.exists()) {
+                document.getElementById('day-counter').innerText = docSnap.data().count;
+            }
+        });
+
+        // Fetch and display the list of dates
+        const dateRef = collection(db, 'dates');
+        getDocs(dateRef).then((querySnapshot) => {
+            const dateList = document.getElementById('date-list');
+            querySnapshot.forEach((doc) => {
+                const li = document.createElement('li');
+                li.textContent = new Date(doc.data().date.seconds * 1000).toLocaleString();
+                dateList.appendChild(li);
+            });
+        });
+    </script>
     <div class="container">
         <h1>Days Since It Smelled Like Weed</h1>
         <div id="day-counter">0</div>
-        <button onclick="resetCounter()">Reset Counter</button>
         <h2>🥦 Dates when they chiefed some dank nugs 🥦</h2>
         <ul id="date-list"></ul>
     </div>
-    <script>
-        // Your Firebase configuration
-        const encodedConfig = "eyJhcGlLZXkiOiAiQUl6YVN5Q3ZheDlqU0ZjSjUzQ0RzeExPQVBFcDNWYlVtOXVoeE0iLCAiYXV0aERvbWFpbiI6ICJkYW5rLW51Z3MuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJkYW5rLW51Z3MiLCAic3RvcmFnZUJ1Y2tldCI6ICJkYW5rLW51Z3MuZmlyZWJhc2VzdG9yYWdlLmFwcCIsICJtZXNzYWdpbmdTZW5kZXJJZCI6ICI0MjUzMTc0ODY4ODgiLCAiYXBwSWQiOiAiMToyNTMxNzQ4Njg4ODp3ZWI6YTk4NWQ1ZGI3ZWJiYmI5ODMxODAxZGQifQ==";
-
-        // Decode the configuration
-        const firebaseConfig = JSON.parse(atob(encodedConfig));
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        const userId = "unique_user_id"; // Replace with a unique identifier for each user
-
-        let dayCounter = 0;
-        let dateList = [];
-
-        async function loadUserData() {
-            const doc = await db.collection('users').doc(userId).get();
-            if (doc.exists) {
-                const data = doc.data();
-                dayCounter = data.dayCounter || 0;
-                dateList = data.dateList || [];
-                updateCounter();
-                updateDateList();
-            }
-        }
-
-        async function saveUserData() {
-            await db.collection('users').doc(userId).set({
-                dayCounter,
-                dateList
-            });
-        }
-
-        function updateCounter() {
-            document.getElementById('day-counter').innerText = dayCounter;
-            saveUserData();
-        }
-
-        function updateDateList() {
-            const dateListElement = document.getElementById('date-list');
-            dateListElement.innerHTML = '';
-            dateList.forEach(date => {
-                const listItem = document.createElement('li');
-                listItem.innerText = date;
-                dateListElement.appendChild(listItem);
-            });
-            saveUserData();
-        }
-
-        function resetCounter() {
-            const today = new Date().toLocaleDateString();
-            dateList.push(today);
-            dayCounter = 0;
-            updateCounter();
-            updateDateList();
-        }
-
-        // Increment the counter every day
-        setInterval(() => {
-            dayCounter++;
-            updateCounter();
-        }, 86400000); // 86400000 ms = 1 day
-
-        // Initial load
-        loadUserData();
-    </script>
 </body>
 </html>

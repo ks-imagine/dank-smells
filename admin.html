@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-left: 10px;
+            font-size: 12px;
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCP9uMzJCpYBM3jfhr9w1syCHPbTYC676s",
+            authDomain: "dank-smells.firebaseapp.com",
+            projectId: "dank-smells",
+            storageBucket: "dank-smells.firebasestorage.app",
+            messagingSenderId: "679912259156",
+            appId: "1:679912259156:web:45ae4785e5d0c03e8f37c1",
+            measurementId: "G-LV0NTHWMVB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Fetch and display the list of dates
+        async function fetchDates() {
+            const dateRef = collection(db, 'dates');
+            const q = query(dateRef, orderBy('date', 'desc'));
+            const querySnapshot = await getDocs(q);
+            const dateList = document.getElementById('date-list');
+            dateList.innerHTML = ''; // Clear existing list
+            querySnapshot.forEach((doc) => {
+                const li = document.createElement('li');
+                const date = new Date(doc.data().date.seconds * 1000).toLocaleString();
+                li.innerHTML = `${date} 
+                    <button onclick="deleteDate('${doc.id}')">Delete</button>`;
+                dateList.appendChild(li);
+            });
+        }
+
+        // Delete date function
+        window.deleteDate = async function (id) {
+            try {
+                await deleteDoc(doc(db, 'dates', id));
+                showTemporaryMessage('Date deleted successfully!');
+                fetchDates(); // Refresh the list
+            } catch (error) {
+                console.error('Error deleting date: ', error);
+            }
+        }
+
+        // Show temporary message
+        function showTemporaryMessage(message) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.style.display = 'block';
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 2000);
+        }
+
+        // Fetch dates on page load
+        fetchDates();
+    </script>
+    <div class="container">
+        <div id="message" style="display: none; color: green; margin-bottom: 10px;"></div>
+        <ul id="date-list"></ul>
+    </div>
+</body>
+
+</html>

@@ -51,6 +51,11 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -86,9 +91,10 @@
             dateList.innerHTML = ''; // Clear existing list
             querySnapshot.forEach((doc) => {
                 const li = document.createElement('li');
-                const date = new Date(doc.data().date.seconds * 1000).toLocaleString();
-                li.innerHTML = `${date} 
-                    <button onclick="deleteDate('${doc.id}')">Delete</button>`;
+                const date = new Date(doc.data().date.seconds * 1000);
+                const formattedDate = date.toLocaleString();
+                const deleteButton = `<button ${date < new Date('2024-11-16') ? 'disabled' : ''} onclick="deleteDate('${doc.id}')">Delete</button>`;
+                li.innerHTML = `${formattedDate} ${deleteButton}`;
                 dateList.appendChild(li);
             });
         }

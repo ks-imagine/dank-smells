@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,14 +48,14 @@
         }
     </style>
 </head>
+
 <body>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
         // Your web app's Firebase configuration
         const hiddenConfig = "YXBpS2V5OiAiQUl6YVN5Q1A5dU16SkNwWUJNM2pmaHI5dzFzeUNIU2hQYlRZQzY3NnMiLA0KICAgICAgICAgICAgICAgIGF1dGhEb21haW46ICJkYW5rLXNtZWxscy5maXJlYmFzZWFwcC5jb20iLA0KICAgICAgICAgICAgICAgIHByb2plY3RJZDogImRhbmsgc21lbGxzIiwNCiAgICAgICAgICAgICAgICBzdG9yYWdlQnVja2V0OiAiZGFuay1zbWVsbHMuZmlyZWJhc2VzdG9yYWdlLmFwcCIsDQogICAgICAgICAgICAgICAgbWVzc2FnaW5nU2VuZGVySWQ6ICI2Nzk5MTIyNTkxNTYiLA0KICAgICAgICAgICAgICAgIGFwcElkOiAiMTo2Nzk5MTIyNTkxNTY6d2ViOjQ1YWU0Nzg1ZTVkMGMwM2U4ZjM3YzEiLA0KICAgICAgICAgICAgICAgIG1lYXN1cmVtZW50SWQ6ICJHLUxWMU5USFdNVkIiDQp9Ow==";
         const firebaseConfig = JSON.parse(atob(hiddenConfig));
@@ -65,13 +66,11 @@
         const db = getFirestore(app);
 
         // Reset counter function
-        window.resetCounter = async function() {
-            const docRef = doc(db, 'counter', 'daysSince');
+        window.resetCounter = async function () {
             const dateRef = collection(db, 'dates');
             const now = new Date();
 
             try {
-                await setDoc(docRef, { count: 0 });
                 await addDoc(dateRef, { date: now });
                 alert('Counter reset and date added successfully!');
             } catch (error) {
@@ -84,4 +83,5 @@
         <button onclick="resetCounter()">IT FUCKING SMELLS AGAIN BUTTON</button>
     </div>
 </body>
+
 </html>

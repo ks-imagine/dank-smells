@@ -60,7 +60,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -78,16 +78,20 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        // Fetch and display the counter value
-        const docRef = doc(db, 'counter', 'daysSince');
-        getDoc(docRef).then((docSnap) => {
-            if (docSnap.exists()) {
-                document.getElementById('day-counter').innerText = docSnap.data().count;
+        // Fetch and display the most recent date and calculate the day counter
+        const dateRef = collection(db, 'dates');
+        const q = query(dateRef, orderBy('date', 'desc'), limit(1));
+        getDocs(q).then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                const mostRecentDate = querySnapshot.docs[0].data().date.toDate();
+                const now = new Date();
+                const diffTime = Math.abs(now - mostRecentDate);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Use Math.floor to count only complete 24-hour periods
+                document.getElementById('day-counter').innerText = diffDays;
             }
         });
 
         // Fetch and display the list of dates
-        const dateRef = collection(db, 'dates');
         getDocs(dateRef).then((querySnapshot) => {
             const dateList = document.getElementById('date-list');
             querySnapshot.forEach((doc) => {

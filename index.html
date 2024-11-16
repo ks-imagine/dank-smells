@@ -21,13 +21,16 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            max-width: 600px;
+            max-width: 100%;
+            min-width: 300px;
             margin: 50px auto;
+            overflow: hidden;
         }
 
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
+            white-space: nowrap;
         }
 
         #day-counter {
@@ -39,6 +42,7 @@
         h2 {
             font-size: 24px;
             margin-bottom: 20px;
+            white-space: nowrap;
         }
 
         ul {
@@ -98,9 +102,9 @@
         });
     </script>
     <div class="container">
-        <h1>Days Since It Smelled Like Weed</h1>
+        <h1>Days Since It Last Smelled Like Weed</h1>
         <div id="day-counter">0</div>
-        <h2>🥦 Dates when they chiefed some dank nugs 🥦</h2>
+        <h2>🥦 Days when Unit 14 chiefed some dank nugs 🥦</h2>
         <ul id="date-list"></ul>
     </div>
 </body>

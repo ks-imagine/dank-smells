@@ -57,8 +57,15 @@
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         // Your web app's Firebase configuration
-        const hiddenConfig = "YXBpS2V5OiAiQUl6YVN5Q1A5dU16SkNwWUJNM2pmaHI5dzFzeUNIU2hQYlRZQzY3NnMiLA0KICAgICAgICAgICAgICAgIGF1dGhEb21haW46ICJkYW5rLXNtZWxscy5maXJlYmFzZWFwcC5jb20iLA0KICAgICAgICAgICAgICAgIHByb2plY3RJZDogImRhbmsgc21lbGxzIiwNCiAgICAgICAgICAgICAgICBzdG9yYWdlQnVja2V0OiAiZGFuay1zbWVsbHMuZmlyZWJhc2VzdG9yYWdlLmFwcCIsDQogICAgICAgICAgICAgICAgbWVzc2FnaW5nU2VuZGVySWQ6ICI2Nzk5MTIyNTkxNTYiLA0KICAgICAgICAgICAgICAgIGFwcElkOiAiMTo2Nzk5MTIyNTkxNTY6d2ViOjQ1YWU0Nzg1ZTVkMGMwM2U4ZjM3YzEiLA0KICAgICAgICAgICAgICAgIG1lYXN1cmVtZW50SWQ6ICJHLUxWMU5USFdNVkIiDQp9Ow==";
-        const firebaseConfig = JSON.parse(atob(hiddenConfig));
+        const firebaseConfig = {
+            apiKey: "AIzaSyCP9uMzJCpYBM3jfhr9w1syCHPbTYC676s",
+            authDomain: "dank-smells.firebaseapp.com",
+            projectId: "dank-smells",
+            storageBucket: "dank-smells.firebasestorage.app",
+            messagingSenderId: "679912259156",
+            appId: "1:679912259156:web:45ae4785e5d0c03e8f37c1",
+            measurementId: "G-LV0NTHWMVB"
+        };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);

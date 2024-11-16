@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,8 +56,12 @@
         }
     </style>
 </head>
+
 <body>
     <script type="module">
+        const emojis = ["🥦", "🌿", "🔥", "⛽️", "🪴", "🌳", "🍁", "🍃", "🍀", "⚗️", "🌿🚬", "💨"];
+        let emojiIndex = 0;
+
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
@@ -92,20 +97,24 @@
         });
 
         // Fetch and display the list of dates
-        getDocs(dateRef).then((querySnapshot) => {
+        const qAll = query(dateRef, orderBy('date', 'desc'));
+        getDocs(qAll).then((querySnapshot) => {
             const dateList = document.getElementById('date-list');
             querySnapshot.forEach((doc) => {
                 const li = document.createElement('li');
-                li.textContent = new Date(doc.data().date.seconds * 1000).toLocaleString();
+                const emoji = emojis[emojiIndex];
+                li.textContent = `${emoji} ${new Date(doc.data().date.seconds * 1000).toLocaleString()} ${emoji}`;
                 dateList.appendChild(li);
+                emojiIndex = (emojiIndex + 1) % emojis.length; // Loop back to the start of the emojis array
             });
         });
     </script>
     <div class="container">
         <h1>Days Since It Last Smelled Like Weed</h1>
         <div id="day-counter">0</div>
-        <h2>🥦 Days when Unit 14 chiefed some dank nugs 🥦</h2>
+        <h2>Dates when Unit 14 chiefed some dank nugs</h2>
         <ul id="date-list"></ul>
     </div>
 </body>
+
 </html>

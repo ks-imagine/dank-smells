@@ -98,6 +98,7 @@
 
         // Fetch and display the list of dates
         const qAll = query(dateRef, orderBy('date', 'desc'));
+        let incidentCount = 0;
         getDocs(qAll).then((querySnapshot) => {
             const dateList = document.getElementById('date-list');
             querySnapshot.forEach((doc) => {
@@ -106,7 +107,9 @@
                 li.textContent = `${emoji} ${new Date(doc.data().date.seconds * 1000).toLocaleString()} ${emoji}`;
                 dateList.appendChild(li);
                 emojiIndex = (emojiIndex + 1) % emojis.length; // Loop back to the start of the emojis array
+                incidentCount += 1;
             });
+            document.getElementById('incident-count').innerText = `Total incidents: ${incidentCount}`;
         });
     </script>
     <div class="container">
@@ -114,6 +117,7 @@
         <div id="day-counter">0</div>
         <h2>Dates when Unit 14 chiefed some dank nugs</h2>
         <ul id="date-list"></ul>
+        <p id="incident-count"></p>
     </div>
 </body>
 
